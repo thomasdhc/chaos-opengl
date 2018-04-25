@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include <map>
 
 // Include GLEW
 #include <GL/glew.h>
@@ -22,25 +23,38 @@ void generateVertices(
 	std::vector<vec3> &finalVertices
 ){
 	std::vector<std::vector<vec3> > verticesList;
-	GLfloat currentR = 2.4;
+	GLfloat currentR = 2.9;
+	GLfloat rIncreaseRate = 0.005;
 
-	GLint duration = 20;
-	GLint rIteration = 20;
+	GLint duration = 30;
+	GLint rIteration = 400;
+
+	GLfloat stepZ = 0.0f;
 
 	for (int z = 0; z < rIteration; z++){
 		std::vector<vec3> currentArray;
-		GLfloat step = 0.0;
+		GLfloat stepX = 0.0;
 		GLfloat currentPopulation = 0.1;
 		GLfloat newPopulation;
 		for (int x = 0; x < duration; x++){
-			vec3 vertex = vec3(step, currentPopulation * 10.0f, currentR);
+			vec3 vertex = vec3(stepX, currentPopulation * 10.0f, stepZ);
 			currentArray.push_back(vertex);
 			newPopulation = currentR * currentPopulation * (1 - currentPopulation);
 			currentPopulation = newPopulation;
-			step = step + 1.0;
+			stepX = stepX + 1.0;
 		}
 		verticesList.push_back(currentArray);
-		currentR = currentR + 0.1;
+		currentR = currentR + rIncreaseRate;
+		stepZ = stepZ + 0.25;
+		if (z <= 99) {
+			rIncreaseRate = 0.005;
+		} else if (z <= 199){
+			rIncreaseRate = 0.002;
+		} else if (z <= 299){
+			rIncreaseRate = 0.002;
+		} else {
+			rIncreaseRate = 0.0005;
+		}
 	}
 
 	for (int z = 0; z < rIteration - 1; z++){
@@ -76,6 +90,7 @@ void generateVertices(
 		}
 	}
 }
+
 
 void windowInitlization(){
 	glfwInit();
@@ -122,42 +137,37 @@ int main(){
 	GLuint programID = LoadShaders("TransformVertexShader.glsl", "ColorFragmentShader.glsl");
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 
+	std::map<int,std::vector<GLfloat> > colorMap = {
+		{0, {0.000f, 0.000f, 0.000f}},
+		{1, {0.000f, 0.000f, 0.000f}},
+		{2, {0.000f, 0.392f, 0.000f}},
+		{3, {0.000f, 0.502f, 0.000f}},
+		{4, {0.133f, 0.545f, 0.133f}},
+		{5, {0.196f, 0.804f, 0.196f}},
+		{6, {0.596f, 0.984f, 0.596f}},
+		{7, {0.000f, 0.980f, 0.604f}},
+        {8, {0.000f, 1.000f, 0.498f}},
+		{9, {0.000f, 1.000f, 0.000f}},
+		{10, {0.000f, 1.000f, 0.000f}}
+	};
+
 	std::vector<vec3> vertexVector;
 	generateVertices(vertexVector);
 
 	GLfloat g_vertex_buffer_data[vertexVector.size() * 3];
 	GLfloat g_color_buffer_data[vertexVector.size() * 3];
 
-	GLfloat r1 = 1.0f;
-	GLfloat g1 = 0.0f;
-	GLfloat b1 = 0.0f;
-	GLfloat r2 = 0.0f;
-	GLfloat g2 = 1.0f;
-	GLfloat b2 = 0.0f;
-	int colorSet = 0;
-
 	for (int x = 0; x < vertexVector.size(); x ++){
 		GLfloat r, g, b;
-		if (colorSet == 1){
-			r = r1;
-			g = g1;
-			b = b1;
-		} else {
-			r = r2;
-			g = g2;
-			b = b2;
-		}
-
 		g_vertex_buffer_data[x * 3] = vertexVector[x].x;
 		g_vertex_buffer_data[x * 3 + 1] = vertexVector[x].y;
 		g_vertex_buffer_data[x * 3 + 2] = vertexVector[x].z;
 
-		g_color_buffer_data[x * 3] = r;
-		g_color_buffer_data[x * 3 + 1] = g;
-		g_color_buffer_data[x * 3 + 2] = b;
-		if (x % 3 == 2){
-			colorSet = colorSet == 0 ? 1 : 0;
-		}
+		int yValue = int(vertexVector[x].y);
+		std::vector<float> colorArray = colorMap[yValue];
+		g_color_buffer_data[x * 3] = colorArray[0];
+		g_color_buffer_data[x * 3 + 1] = colorArray[1];
+		g_color_buffer_data[x * 3 + 2] = colorArray[2];
 	}
 
 	GLuint vertexbuffer;
