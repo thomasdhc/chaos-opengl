@@ -27,7 +27,7 @@ void generateVertices(
 	GLfloat rIncreaseRate = 0.005;
 
 	GLint duration = 30;
-	GLint rIteration = 400;
+	GLint rIteration = 410;
 
 	GLfloat stepZ = 0.0f;
 
@@ -45,15 +45,15 @@ void generateVertices(
 		}
 		verticesList.push_back(currentArray);
 		currentR = currentR + rIncreaseRate;
-		stepZ = stepZ + 0.25;
-		if (z <= 99) {
-			rIncreaseRate = 0.005;
-		} else if (z <= 199){
-			rIncreaseRate = 0.002;
-		} else if (z <= 299){
-			rIncreaseRate = 0.002;
+		stepZ = stepZ + 0.1;
+		if (currentR <= 3.4) {
+			rIncreaseRate = 0.01;
+		} else if (currentR <= 3.6){
+			rIncreaseRate = 0.004;
+		} else if (currentR <= 3.82){
+			rIncreaseRate = 0.022;
 		} else {
-			rIncreaseRate = 0.0005;
+			rIncreaseRate = 0.0001;
 		}
 	}
 
@@ -196,26 +196,12 @@ int main(){
 		// vertex buffer
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-		glVertexAttribPointer(
-			0,
-			3,
-			GL_FLOAT,
-			GL_FALSE,
-			0,
-			(void*)0
-		);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 		// color buffer
 		glEnableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-		glVertexAttribPointer(
-			1,
-			3,
-			GL_FLOAT,
-			GL_FALSE,
-			0,
-			(void*)0
-		);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0,(void*)0);
 
 		glDrawArrays(GL_TRIANGLES, 0, vertexVector.size());
 
