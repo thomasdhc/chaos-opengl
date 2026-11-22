@@ -1,4 +1,4 @@
-"""Plot the logistic map near its period-doubling accumulation point."""
+"""Plot logistic-map period doubling and periodic windows within chaos."""
 
 import argparse
 from pathlib import Path
@@ -49,14 +49,22 @@ def sample_attractor(r, burn_in=20000, iterations=512):
 def plot_diagram(output=DEFAULT_OUTPUT, samples=6000, burn_in=20000, iterations=512):
     if samples < 2:
         raise ValueError("samples must be at least 2")
-    fig, axes = plt.subplots(1, 2, figsize=(15, 6), layout="constrained")
+    fig, axes = plt.subplots(2, 2, figsize=(15, 11), layout="constrained")
+    axes = axes.ravel()
     linear_r = np.linspace(3.5, 3.6, samples)
     # Uniform screen-space sampling supplies increasing r resolution near chaos.
     distances = np.geomspace(R_INFINITY - 3.5, 1e-5, samples)
     log_r = R_INFINITY - distances
     log_positions = distance_coordinate(log_r)
 
-    for ax, r, positions in zip(axes, (linear_r, log_r), (linear_r, log_positions)):
+    chaotic_r = np.linspace(3.6, 4.0, samples)
+    window_r = np.linspace(3.82, 3.86, samples)
+
+    for ax, r, positions in zip(
+        axes,
+        (linear_r, log_r, chaotic_r, window_r),
+        (linear_r, log_positions, chaotic_r, window_r),
+    ):
         populations = sample_attractor(r, burn_in, iterations)
         ax.scatter(
             np.tile(positions, iterations), populations.ravel(),
@@ -86,6 +94,22 @@ def plot_diagram(output=DEFAULT_OUTPUT, samples=6000, burn_in=20000, iterations=
             ha="center", va="bottom", fontsize=8, color="#286a9b",
         )
     axes[1].set_title(axes[1].get_title(), pad=25)
+    axes[2].set(
+        title="Periodic windows within chaos (shaded region enlarged at right)",
+        xlabel="Growth rate r", ylim=(0, 1),
+    )
+    axes[2].axvspan(3.82, 3.86, color="#286a9b", alpha=0.12)
+    axes[3].set(
+        title="Period-3 window and its period-doubling cascade",
+        xlabel="Growth rate r", ylim=(0, 1),
+    )
+    axes[3].set_title(axes[3].get_title(), pad=25)
+    for r, label in ((1 + np.sqrt(8), "3-cycle begins"), (3.8414990075, "3 → 6")):
+        axes[3].axvline(r, color="#286a9b", lw=0.8, ls="--")
+        axes[3].text(
+            r, 1.01, label, transform=axes[3].get_xaxis_transform(),
+            ha="center", va="bottom", fontsize=8, color="#286a9b",
+        )
     fig.suptitle(
         "Logistic map · xₙ₊₁ = r xₙ (1 − xₙ)\n"
         f"r∞ ≈ {R_INFINITY} · {burn_in:,} settling steps + {iterations:,} retained per r",
