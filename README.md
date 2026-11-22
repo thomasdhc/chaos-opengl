@@ -32,47 +32,6 @@ The beginning of the model shows nice waves, representing the system settling to
 >> ./a.out
 ```
 
-## Generating the Bifurcation Zooms
-
-![Period doubling and periodic windows within chaos](graphs/bifurcation_zooms.png)
-
-From the repository root, with Python 3, NumPy and Matplotlib installed:
-
-```bash
-python scripts/bifurcation.py
-```
-
-This saves `graphs/bifurcation_zooms.png` without opening a window. The four panels show:
-
-- **Linear r, 3.5–3.6:** the period-doubling sequence and the onset of chaos.
-- **Logarithmic distance to chaos:** horizontal position is
-  `−log10(r∞ − r)`, where `r∞ ≈ 3.569945672`. Tick labels show actual r values.
-  This panel approaches the accumulation point **from below**, stopping at a
-  distance of `0.00001`; it does not include the chaotic region above it.
-  The population axis zooms to 0.34–0.39 to isolate the lowest branch.
-  Blue lines label the periods immediately before and after each split.
-- **Chaotic-region overview, r = 3.6–4.0:** sparse repeating branches interrupt
-  the dense chaotic regions, leaving large white windows. The shaded interval
-  is enlarged in the next panel.
-- **Period-3 window, r = 3.82–3.86:** a stable three-population cycle appears at
-  `r = 1 + √8 ≈ 3.828427`, then splits into six, twelve, and more populations
-  before returning to chaos. Dashed lines mark the onset and first doubling.
-  These windows are returns to periodic behavior, not simply branches merging;
-  blank space elsewhere can also be gaps between chaotic bands.
-
-Unlike simply using `log(r)`, the distance transform spreads out successive
-splits. Each panel samples 6,000 r values uniformly in its displayed horizontal
-coordinate, discards 20,000 settling steps per r, and retains the next 512 values.
-These are finite numerical approximations: convergence slows near a split, and
-fine branches eventually require further population-axis zooming as well.
-The OpenGL visualization is unchanged.
-
-Sampling and output can be overridden, for example:
-
-```bash
-python scripts/bifurcation.py --samples 10000 --burn-in 40000 --iterations 1024 --output graphs/bifurcation_detailed.png
-```
-
 ## Thank You and Further Reading
 
 The majority of the code found in the common folder was learned from a great OpenGL tutorial. To learn more about OpenGL follow the link to this tutorial.

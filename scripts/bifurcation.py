@@ -18,7 +18,7 @@ SPLITS = (
     (3.5696916098, "32 → 64"),
     (3.5698912580, "64 → 128"),
 )
-DEFAULT_OUTPUT = Path(__file__).resolve().parents[1] / "graphs/bifurcation_zooms.png"
+DEFAULT_OUTPUT = Path(__file__).resolve().parents[1] / "docs/graphs/bifurcation_zooms.png"
 
 
 def distance_coordinate(r):
