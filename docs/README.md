@@ -31,7 +31,8 @@ and retain the next 512 populations at each rate.
 
 ## Population over time
 
-Three independent runs share `x₀ = 0.123456789`, each with a constant growth rate:
+Each dot shows the population at an integer time step. Three independent runs
+share `x₀ = 0.123456789`, each with a constant growth rate:
 
 | r | Long-run behavior |
 | --- | --- |

@@ -25,7 +25,7 @@ DEFAULT_OUTPUT_DIRECTORY = Path(__file__).resolve().parents[1] / "docs/graphs"
 
 def plot_time_views(output_directory=DEFAULT_OUTPUT_DIRECTORY):
     rates = np.array([r for r, _, _ in EXPERIMENTS])
-    # One continuous trajectory per rate, including the shared initial population.
+    # One discrete trajectory per rate, including the shared initial population.
     populations = np.vstack((
         np.full((1, rates.size), INITIAL_POPULATION),
         sample_attractor(rates, burn_in=0, iterations=SETTLING_STEPS + LONG_RUN_STEPS),
@@ -41,7 +41,7 @@ def plot_time_views(output_directory=DEFAULT_OUTPUT_DIRECTORY):
         fig, axes = plt.subplots(3, 1, figsize=(12, 8), sharex=True, layout="constrained")
         times = np.arange(start, start + steps + 1)
         for column, (ax, (r, behavior, color)) in enumerate(zip(axes, EXPERIMENTS)):
-            ax.plot(times, populations[times, column], "o-", color=color, ms=3, lw=0.8)
+            ax.plot(times, populations[times, column], marker="o", linestyle="none", color=color, ms=3)
             ax.set(title=f"r = {r:.3f} · {behavior}", ylabel="Population x", ylim=(0, 1))
             ax.set_xlim(times[0], times[-1])
             ax.grid(alpha=0.2)
