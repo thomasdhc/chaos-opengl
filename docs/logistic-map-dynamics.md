@@ -52,6 +52,15 @@ are interrupted by irregular bursts. At 3.830, three values repeat; at 3.845,
 six values repeat as two alternating triplets. Stable cycles draw nearby
 populations toward the same repeating orbit.
 
+## Population distribution at r = 3.828
+
+![Population frequencies over 20,060 steps at r = 3.828](graphs/population_distribution_r3_828.png)
+
+Each bar gives the percentage of steps whose population falls within a
+0.01-wide interval. The sample covers steps 1–20,060 from `x₀ = 0.123456789`,
+including initial settling. Peaks show frequently visited population ranges;
+the spread between them captures the irregular excursions.
+
 ## Reproduce
 
 From the repository root, using Python 3 with NumPy and Matplotlib:
@@ -59,6 +68,7 @@ From the repository root, using Python 3 with NumPy and Matplotlib:
 ```bash
 python scripts/bifurcation.py
 python scripts/population_time.py
+python scripts/population_distribution.py
 ```
 
 Generated figures are saved in `docs/graphs/`.
