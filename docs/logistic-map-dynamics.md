@@ -90,12 +90,11 @@ Generated figures are saved in `docs/graphs/`.
 ![Bifurcation diagram colored by population frequency](graphs/bifurcation_frequency.png)
 
 The original r = 2.4–4.0 view is regenerated with color showing the percentage
-of retained steps in each 0.01-wide population bin. Two distinct palettes mark
-the lower-frequency range in orange and the higher-frequency range in green;
-darker shades within each palette indicate higher frequencies. White marks
-unsampled ranges. A logarithmic color scale brings out both concentrated periodic
-cycles and spread-out chaotic populations. Branch positions use finer
-0.001-wide bins.
+of retained steps in each 0.01-wide population bin. Warm red/orange marks lower
+frequencies, yellow marks the transition, and green deepens toward higher
+frequencies. White marks unsampled ranges. A logarithmic color scale brings out
+both concentrated periodic cycles and spread-out chaotic populations. Branch
+positions use finer 0.001-wide bins.
 
 Each of 4,000 constant-r runs starts at `x₀ = 0.123456789`, discards 20,000
 settling steps, and retains 20,060 steps for the frequency estimate.

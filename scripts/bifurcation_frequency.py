@@ -6,7 +6,7 @@ from pathlib import Path
 import matplotlib
 
 matplotlib.use("Agg")
-from matplotlib.colors import ListedColormap, LogNorm
+from matplotlib.colors import LogNorm
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -50,9 +50,7 @@ def frequency_colors(counts, steps=STEPS):
 def plot_diagram(output=DEFAULT_OUTPUT):
     rates = np.linspace(R_MIN, R_MAX, R_SAMPLES)
     colors = frequency_colors(population_counts(rates))
-    low_colors = plt.colormaps["Oranges"](np.linspace(0.45, 0.95, 128))
-    high_colors = plt.colormaps["Greens"](np.linspace(0.5, 1.0, 128))
-    cmap = ListedColormap(np.vstack((low_colors, high_colors)), name="OrangeGreen")
+    cmap = plt.colormaps["RdYlGn"].copy()
     cmap.set_bad("white")
     fig, ax = plt.subplots(figsize=(14, 7), layout="constrained")
     image = ax.imshow(
