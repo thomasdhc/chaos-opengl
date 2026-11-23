@@ -80,6 +80,20 @@ python scripts/bifurcation.py
 python scripts/population_time.py
 python scripts/population_distribution.py
 python scripts/distribution_animation.py
+python scripts/bifurcation_frequency.py
 ```
 
 Generated figures are saved in `docs/graphs/`.
+
+## Frequency-colored bifurcation diagram
+
+![Bifurcation diagram colored by population frequency](graphs/bifurcation_frequency.png)
+
+The original r = 2.4–4.0 view is regenerated with color showing the percentage
+of retained steps in each 0.01-wide population bin. Darker green marks more
+frequently visited ranges; white marks unsampled ranges. A logarithmic color
+scale brings out both concentrated periodic cycles and spread-out chaotic
+populations. Branch positions use finer 0.001-wide bins.
+
+Each of 4,000 constant-r runs starts at `x₀ = 0.123456789`, discards 20,000
+settling steps, and retains 20,060 steps for the frequency estimate.
