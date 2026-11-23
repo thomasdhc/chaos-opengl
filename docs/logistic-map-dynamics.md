@@ -61,14 +61,25 @@ Each bar gives the percentage of steps whose population falls within a
 including initial settling. Peaks show frequently visited population ranges;
 the spread between them captures the irregular excursions.
 
+## Distribution across growth rates
+
+![Population distributions from r = 3.820 to 3.860](graphs/population_distribution_sweep.gif)
+
+The animation advances r by 0.0002 per frame. Each frame samples an independent
+constant-r run over steps 1–20,060 from the same initial population, using
+0.01-wide bins and fixed axes. The sweep reveals the three-cycle window,
+its period-doubling sequence, and the broader distribution after the interior
+crisis. The lower cursor locates each frame within the growth-rate range.
+
 ## Reproduce
 
-From the repository root, using Python 3 with NumPy and Matplotlib:
+From the repository root, using Python 3 with NumPy, Matplotlib, and Pillow:
 
 ```bash
 python scripts/bifurcation.py
 python scripts/population_time.py
 python scripts/population_distribution.py
+python scripts/distribution_animation.py
 ```
 
 Generated figures are saved in `docs/graphs/`.
