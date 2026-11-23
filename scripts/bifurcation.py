@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+INITIAL_POPULATION = 0.123456789
 R_INFINITY = 3.569945672  # Approximation; do not resolve distances near its precision.
 SPLITS = (
     (3.5440903596, "4 → 8"),
@@ -36,7 +37,7 @@ def sample_attractor(r, burn_in=20000, iterations=512):
         raise ValueError("r must be a finite one-dimensional array in [0, 4]")
     if burn_in < 0 or iterations < 1:
         raise ValueError("burn_in must be nonnegative and iterations positive")
-    x = np.full(r.shape, 0.123456789, dtype=float)
+    x = np.full(r.shape, INITIAL_POPULATION, dtype=float)
     for _ in range(burn_in):
         x = r * x * (1 - x)
     populations = np.empty((iterations, r.size))
